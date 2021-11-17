@@ -1,0 +1,51 @@
+\chapter{Método Proposto}
+
+\section{Métodos de Otimização}
+\subsection{Adam - Adaptative Moment Estimation}
+
+A otimização estocástica baseada em gradientes é uma ferramenta de importância prática em diversos campos da ciência e da engenharia. O método Adam é uma proposta interessante pois utiliza somente derivadas de primeira ordem e exige uma baixa utilização de memória.
+
+O algoritmo por trás do método Adam realiza iterações de forma a computar o vetor de parâmetros ótimos (ou pesos) enviesados pelo gradiente da função estocástica. Os parâmetros utilizados são: 
+
+\begin{itemize}
+    \item $\mathop{f}(\theta)$ : função estocástica para o processamento de $\theta$ (pesos)
+    \item $\beta_{1},\beta_{2}$ : razão de decaimento exponencial para os momentos estimados
+    \item $\alpha$ : taxa de aprendizado, responsável por indicar a largura do passo entre cada iteração
+    \item $\theta_{0}$ : vetor de parâmetros inicial
+\end{itemize} 
+
+Os parâmetros $\beta_{1},\beta_{2}$ pertencem ao domínio [0,1). Quanto menoro valor de $\alpha$, mais iterações são necessárias para atingir o vetor $\theta$ ótimo, entretanto, se $\alpha$ for muito grande, pode haver uma dificuldade de se achar um mínimo global, há uma taxa de erro $\epsilon$ que é definida como o máximo desejável para a otimização. Valores bastante usuais para estas propriedades em aplicações de Machine Learning costumam ser $\beta_{1}$=0.9, $\beta_{2}$=0.999, $\alpha$=0.001 e $\epsilon$=$10^{-8}$
+
+$\mathop{m_{0}}$, $\mathop{v_{0}}$ e $\mathop{t}$ são iniciados como zero e servirão como variáveis auxiliares para o cálculo dos momentos e das atualizações de $\theta$. De maneira simplificada, o algoritmo seguirá a seguinte lógica:
+
+$\longrightarrow$ Passo 1: Inicialização das variáveis
+
+$\mathop{m_{0}}$ = 0
+
+$\mathop{v_{0}}$ = 0
+
+$\mathop{t}$ = 0
+
+$\longrightarrow$ Passo 2: Processamento do vetor $\theta$ em laço de repetição
+
+$\mathbf{Enquanto}$ $\theta$ não converge $\mathbf{faça:}$
+
+t = t + 1;
+
+$\mathop{g_{t}}$ = $\nabla_{\theta}\mathop{f_{t}(\theta_{t-1})}$
+
+$\mathop{m_{t}}$ = $\beta_{1}.\mathop{m_{t-1}}+(1-\beta_{1}).\mathop{g_{t}}$
+
+$\mathop{v_{t}}$ = $\beta_{2}.\mathop{v_{t-1}}+(1-\beta_{2}).\mathop{g_{t}^2}$
+
+$\hat{\mathop{m_{t}}}$ = $\mathop{m_{t}}/(1-\beta_{1}^{t})$
+
+$\hat{\mathop{v_{t}}}$ = $\mathop{v_{t}}/(1-\beta_{2}^{t})$
+
+$\theta_{t}$ = $\theta_{t-1}-\alpha.\hat{\mathop{m_{t}}}/(\sqrt{\hat{\mathop{v_{t}}}}+\epsilon)$
+
+$\longrightarrow$ Passo 3: Retornar vetor $\theta$ ótimo
+
+A depender da função de cálculo do erro estimado $\mathop{f(\theta)}$ e da tolerância especificada.
+
+
